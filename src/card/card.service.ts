@@ -8,4 +8,13 @@ export class CardService {
         
     }
 
+    private sanitizeCardNumber(cardNumber:string):string{
+        const cleaned = cardNumber.trim().replace(/[\s-]/g,'');
+        const isAllDigits = /^\d+$/.test(cleaned);
+        if (!isAllDigits){
+            throw new BadRequestException('Card number must contain only digits');
+        }
+        return cleaned;
+    }
+
 }
