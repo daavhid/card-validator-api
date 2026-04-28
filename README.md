@@ -19,10 +19,20 @@ I chose NestJS because of its modular architecture, dependency injection, and sc
 
 Even for a small service, I wanted clear separation of concerns:
 
-- Controller → handles HTTP requests/responses
-- Service → handles business logic
-- DTOs → validates request payloads
-- Module → encapsulates card validation feature
+- Controller → handles HTTP requests/responses  
+- Service → handles business logic  
+- DTOs → validates request payloads  
+- Module → encapsulates card validation feature  
+
+---
+
+## 🌐 Live API
+
+The API is deployed and available at:
+
+```bash
+https://card-validator-api-nm7i.onrender.com/
+```
 
 ---
 
@@ -32,7 +42,9 @@ Even for a small service, I wanted clear separation of concerns:
 
 Validates whether a card number is valid.
 
-### Request Body
+---
+
+## Request Body
 
 ```json
 {
@@ -91,10 +103,11 @@ Validates whether a card number is valid.
 ## Validation Flow
 
 ### 1. Input Validation
+
 Handled using DTO validation:
 
-- ensures `cardNumber` exists
-- ensures it is a string
+- ensures `cardNumber` exists  
+- ensures it is a string  
 
 ---
 
@@ -102,40 +115,54 @@ Handled using DTO validation:
 
 The service removes:
 
-- spaces
-- hyphens
+- spaces  
+- hyphens  
 
 Example:
 
-`4532-0151 1283-0366`
+```bash
+4532-0151 1283-0366
+```
 
-becomes:
+Becomes:
 
-`4532015112830366`
+```bash
+4532015112830366
+```
 
 ---
 
 ### 3. Numeric Validation
 
-Ensures the sanitized value only contains digits.
+Ensures the sanitized value contains only digits.
 
 ---
 
 ### 4. Luhn Algorithm Check
 
-The service validates the card number using the Luhn algorithm.
+The service validates the card number using the Luhn algorithm:
 
-Steps:
-
-- Start from the rightmost digit
-- Double every second digit
-- Subtract 9 if doubled value exceeds 9
-- Sum all digits
-- If total modulo 10 equals 0 → card is valid
+- Start from the rightmost digit  
+- Double every second digit  
+- Subtract 9 if result exceeds 9  
+- Sum all digits  
+- If `sum % 10 === 0` → card is valid  
 
 ---
 
-## Running the Project
+## Live Testing
+
+Test the deployed API:
+
+```bash
+curl -X POST https://card-validator-api-nm7i.onrender.com/card/validate \
+  -H "Content-Type: application/json" \
+  -d '{"cardNumber": "4532 0151 1283 0366"}'
+```
+
+---
+
+## Running Locally
 
 ```bash
 pnpm install
@@ -158,15 +185,15 @@ pnpm test
 
 ---
 
-## Example Test Card
+## Example Test Cards
 
-Valid:
+### Valid
 
 ```bash
 4532015112830366
 ```
 
-Invalid:
+### Invalid
 
 ```bash
 1234567890123456
@@ -176,6 +203,7 @@ Invalid:
 
 ## Project Structure
 
+```bash
 src/
 ├── card/
 │   ├── dto/
@@ -183,6 +211,7 @@ src/
 │   ├── card.service.ts
 │   ├── card.module.ts
 │   └── card.service.spec.ts
+```
 
 ---
 
@@ -190,4 +219,17 @@ src/
 
 - Card type detection (Visa, Mastercard, Verve, etc.)
 - Rate limiting
-- API documentation with Swagger
+- Swagger API documentation
+
+---
+
+## Summary
+
+This project demonstrates:
+
+- clean backend architecture using NestJS  
+- proper validation and sanitization  
+- Luhn algorithm implementation  
+- structured error handling  
+- testing  
+- live deployment
