@@ -14,7 +14,8 @@ export class CardService {
         if(!isCardValid){
             throw new BadRequestException({
                 code:"CARD_INVALID",
-                message: "invalid card number"
+                valid:false,
+                message: "card number checksum failed"
             })
         }
 
@@ -32,6 +33,7 @@ export class CardService {
         if (cleaned.length < 13 || cleaned.length > 19) {
             throw new BadRequestException({
                 code: "INVALID_CARD_LENGTH",
+                valid:false,
                 message: "Card number must be between 13 and 19 digits"
             });
         }
@@ -42,10 +44,11 @@ export class CardService {
         if (!isAllDigits){
             throw new BadRequestException({
                 code:"INVALID_CARD_NUMBER",
+                valid:false,
                 message:'Card number must contain only digits'
             });
         }
-        
+
         return cleaned;
     }
 
