@@ -5,7 +5,22 @@ export class CardService {
 
     checkCardValidity(cardNumber:string){
         //sanitize card number check for spaces, hyphens and other non-digit characters
-        
+        const sanitizedCardNumber = this.sanitizeCardNumber(cardNumber);
+
+        //check if the card number is valid using Luhn algorithm
+        const isCardValid = this.luhnCheck(sanitizedCardNumber);
+
+        if(!isCardValid){
+            throw new BadRequestException({
+                code:"CARD_INVALID",
+                message: "invalid card number"
+            })
+        }
+
+        return {
+            code:"CARD_VALID",
+            message:"valid card number"
+        }
     }
 
     private sanitizeCardNumber(cardNumber:string):string{
