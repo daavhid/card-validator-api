@@ -6,7 +6,7 @@ import { ValidateCardDto } from './dto/validate-card.dto';
 export class CardController {
   constructor(private readonly cardService: CardService) {}
   @Post('validate')
-  checkCardValidity(@Body() card:ValidateCardDto ){
-    return this.cardService.checkCardValidity(card.cardNumber);
+  validateCardNumber(@Body() card:ValidateCardDto ){
+    return this.cardService.validateCardNumber(card.cardNumber);
   }
 }

@@ -1,9 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { validatedCardResp } from './dto/validated-card-response.dto';
 
 @Injectable()
 export class CardService {
 
-    checkCardValidity(cardNumber:string){
+    validateCardNumber(cardNumber:string): validatedCardResp{
         //sanitize card number check for spaces, hyphens and other non-digit characters
         const sanitizedCardNumber = this.sanitizeCardNumber(cardNumber);
 
@@ -18,6 +19,7 @@ export class CardService {
         }
 
         return {
+            valid: true,
             code:"CARD_VALID",
             message:"valid card number"
         }
@@ -27,7 +29,10 @@ export class CardService {
         const cleaned = cardNumber.trim().replace(/[\s-]/g,'');
         const isAllDigits = /^\d+$/.test(cleaned);
         if (!isAllDigits){
-            throw new BadRequestException('Card number must contain only digits');
+            throw new BadRequestException({
+                message:'Card number must contain only digits',
+                code:"INVALID_CARD_NUMBER"
+            });
         }
         return cleaned;
     }
@@ -36,7 +41,7 @@ export class CardService {
         let sum = 0;
         const ArrNumber = Array.from(cardNumber).reverse();
         for(let i = 0; i < ArrNumber.length;i++){
-            let digit = parseInt(ArrNumber[i]);
+            const digit = Number(ArrNumber[i]);
             if(i % 2 === 1){
                 let double = digit * 2;
                 if(double > 9){
