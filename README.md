@@ -15,7 +15,7 @@ A NestJS API that validates card numbers using the Luhn algorithm.
 
 ## Why NestJS?
 
-Although this assessment only required a single endpoint, I chose NestJS because of its modular architecture, dependency injection, and scalability for production backend services.
+I chose NestJS because of its modular architecture, dependency injection, and scalability for production backend services.
 
 Even for a small service, I wanted clear separation of concerns:
 
