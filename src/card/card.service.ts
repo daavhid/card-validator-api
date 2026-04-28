@@ -17,4 +17,25 @@ export class CardService {
         return cleaned;
     }
 
+    private luhnCheck(cardNumber:string):boolean{
+        let sum = 0;
+        const ArrNumber = Array.from(cardNumber).reverse();
+        for(let i = 0; i < ArrNumber.length;i++){
+            let digit = parseInt(ArrNumber[i]);
+            if(i % 2 === 1){
+                let double = digit * 2;
+                if(double > 9){
+                    double -=9;
+                }
+                sum += double;
+                
+            }else{
+
+                sum += digit;
+            }
+        }
+
+        return sum % 10 === 0;
+    }
+
 }
