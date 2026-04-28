@@ -27,13 +27,25 @@ export class CardService {
 
     private sanitizeCardNumber(cardNumber:string):string{
         const cleaned = cardNumber.trim().replace(/[\s-]/g,'');
+        
+        // check if the length of the string is the required length for a card number 
+        if (cleaned.length < 13 || cleaned.length > 19) {
+            throw new BadRequestException({
+                code: "INVALID_CARD_LENGTH",
+                message: "Card number must be between 13 and 19 digits"
+            });
+        }
+
+
+        //run regex test to check if all characters in the string are all digits
         const isAllDigits = /^\d+$/.test(cleaned);
         if (!isAllDigits){
             throw new BadRequestException({
-                message:'Card number must contain only digits',
-                code:"INVALID_CARD_NUMBER"
+                code:"INVALID_CARD_NUMBER",
+                message:'Card number must contain only digits'
             });
         }
+        
         return cleaned;
     }
 
